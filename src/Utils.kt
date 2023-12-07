@@ -25,3 +25,37 @@ data class Point(val x: Int, val y: Int) {
     }
 
 }
+
+
+/**
+ *   Create combination list with repetitions.
+ *
+ *   I found this code several years ago, it is not mine.
+ */
+fun <T> combinationWithRepetition(arr: Array<T>, r: Int): List<Map<T, Number>> {
+    val result = arrayListOf<ArrayList<T>>()
+
+    /**
+     * @param chosen[] Temporary array to store indices of current combination
+     * @param arr[] Input Array
+     * @param start Starting indexes in arr[]
+     * @param end Ending indexes in arr[]
+     * @param r Size of a combination to be printed
+     */
+    fun combinationCalcRecursive(chosen: IntArray, arr: Array<T>, index: Int, r: Int, start: Int, end: Int) {
+        if (index == r) {
+            val n = arrayListOf<T>()
+            for (i in 0..<r) n.add(arr[chosen[i]])
+            result.add(n)
+            return
+        }
+
+        for (i in start..end) {
+            chosen[index] = i
+            combinationCalcRecursive(chosen, arr, index + 1, r, i, end)
+        }
+    }
+
+    combinationCalcRecursive(IntArray(r + 1), arr, 0, r, 0, arr.size - 1)
+    return result.map { combination -> combination.associateWith { n -> combination.count { it == n } } }
+}
