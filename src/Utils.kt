@@ -59,3 +59,45 @@ fun <T> combinationWithRepetition(arr: Array<T>, r: Int): List<Map<T, Number>> {
     combinationCalcRecursive(IntArray(r + 1), arr, 0, r, 0, arr.size - 1)
     return result.map { combination -> combination.associateWith { n -> combination.count { it == n } } }
 }
+
+
+/**
+ *   Greatest common divisor.
+ */
+fun gcd(a: Long, b: Long): Long {
+    var aNumber = a
+    var bNumber = b
+
+    while (bNumber > 0) {
+        val temp = bNumber
+        bNumber = aNumber % bNumber
+        aNumber = temp
+    }
+
+    return aNumber
+}
+
+/**
+ *   Greatest common divisor.
+ */
+fun gcd(input: List<Long>): Long {
+    var result = input[0]
+    for (i in 1..<input.size) result = gcd(result, input[i])
+    return result
+}
+
+/**
+ *   Lowest common multiple.
+ */
+fun lcm(a: Long, b: Long): Long {
+    return a * (b / gcd(a, b))
+}
+
+/**
+ *   Lowest common multiple.
+ */
+fun lcm(input: List<Long>): Long {
+    var result = input[0]
+    for (i in 1..<input.size) result = lcm(result, input[i])
+    return result
+}
