@@ -26,6 +26,8 @@ data class Point(val x: Int, val y: Int) {
 
 }
 
+fun Pair<Int, Int>.toPoint(): Point = Point(this.first, this.second)
+
 
 /**
  *   Create combination list with repetitions.
