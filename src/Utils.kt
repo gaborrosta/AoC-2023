@@ -1,5 +1,6 @@
 import kotlin.io.path.Path
 import kotlin.io.path.readLines
+import kotlin.math.abs
 
 /**
  *   Read input file.
@@ -13,6 +14,8 @@ fun readFile(day: Int): List<String> = Path("src/Day${day}.txt").readLines()
 data class Point(val x: Int, val y: Int) {
 
     fun inBound(minX: Int, maxX: Int, minY: Int, maxY: Int): Boolean = x in minX..maxX && y in minY..maxY
+
+    fun manhattan(other: Point): Int = abs(x - other.x) + abs(y - other.y)
 
     fun neighbors(): List<Point> = NEIGHBORS.map { Point(it.x + this.x, it.y + this.y) }
 
@@ -28,6 +31,22 @@ data class Point(val x: Int, val y: Int) {
 
 fun Pair<Int, Int>.toPoint(): Point = Point(this.first, this.second)
 
+
+/**
+ *   Create combination list with repetitions.
+ *
+ *   I found this code several years ago, it is not mine.
+ */
+fun <T> combinations(seed: Iterable<T>, count: Int): List<List<T>> {
+
+    fun inner(acc: List<List<T>>, remaining: Int): List<List<T>> = when (remaining) {
+        0 -> acc
+        count -> inner(seed.map { s -> listOf(s) }, remaining - 1)
+        else -> inner(seed.flatMap { s -> acc.map { list -> list + s } }, remaining - 1)
+    }
+
+    return inner(emptyList(), count)
+}
 
 /**
  *   Create combination list with repetitions.
@@ -102,4 +121,29 @@ fun lcm(input: List<Long>): Long {
     var result = input[0]
     for (i in 1..<input.size) result = lcm(result, input[i])
     return result
+}
+
+
+/**
+ *   Rotates a list of strings, i.e. a matrix of chars stored as strings of
+ *   rows.
+ */
+fun Collection<String>.rotate(): Collection<String> {
+    return this.flatMap { it.withIndex() }.groupBy({ (i, _) -> i }, { (_, v) -> v }).map { (_, v) -> v.reversed().joinToString("") }
+}
+
+
+/**
+ *   Returns the indices of the elements matching the given [predicate]. The
+ *   returned list is empty if there are no such elements.
+ */
+inline fun <T> Iterable<T>.indicesOf(predicate: (T) -> Boolean): List<Int> {
+    val indices = arrayListOf<Int>()
+    for ((index, item) in this.withIndex()) {
+        if (predicate(item)) {
+            indices.add(index)
+        }
+    }
+
+    return indices
 }
