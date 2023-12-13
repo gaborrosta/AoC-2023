@@ -128,7 +128,7 @@ fun lcm(input: List<Long>): Long {
  *   Rotates a list of strings, i.e. a matrix of chars stored as strings of
  *   rows.
  */
-fun Collection<String>.rotate(): Collection<String> {
+fun Collection<String>.rotate(): List<String> {
     return this.flatMap { it.withIndex() }.groupBy({ (i, _) -> i }, { (_, v) -> v }).map { (_, v) -> v.reversed().joinToString("") }
 }
 
@@ -154,18 +154,24 @@ inline fun <T> Iterable<T>.indicesOf(predicate: (T) -> Boolean): List<Int> {
  *   [shouldCreateNewGroup] function.
  *
  *
+ *   @param keepFirstElement Whether the first element should be added to the
+ *   group.
+ *
  *   @param shouldCreateNewGroup The function that determines whether a new
  *   group should be created.
  */
-fun <T> Iterable<T>.groupConsecutiveBy(shouldCreateNewGroup: (Int, T) -> Boolean): List<List<IndexedValue<T>>> =
+fun <T> Iterable<T>.groupConsecutiveBy(keepFirstElement: Boolean = true, shouldCreateNewGroup: (Int, T) -> Boolean): List<List<T>> =
     if (!this.any()) {
         emptyList()
     } else {
-        val start = mutableListOf(mutableListOf(IndexedValue(0, this.first())))
-        this.drop(1).foldIndexed(start) { index, groups, t ->
-            val value = IndexedValue(index + 1, t)
-            if (shouldCreateNewGroup(index + 1, t)) {
-                groups.add(mutableListOf(value))
+        val start = mutableListOf(mutableListOf(this.first()))
+        this.drop(1).foldIndexed(start) { index, groups, value ->
+            if (shouldCreateNewGroup(index + 1, value)) {
+                if (keepFirstElement) {
+                    groups.add(mutableListOf(value))
+                } else {
+                    groups.add(mutableListOf())
+                }
             } else {
                 groups.last().add(value)
             }

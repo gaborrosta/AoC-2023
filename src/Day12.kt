@@ -1,6 +1,6 @@
 private fun String.checkArrangement(list: List<Int>): Boolean {
     return this.toList().groupConsecutiveBy { index, char -> index > 0 && this[index - 1] != char }
-        .map { it[0].value to it.size }
+        .map { it[0] to it.size }
         .filter { it.first == '#' }.map { it.second } == list
 }
 
