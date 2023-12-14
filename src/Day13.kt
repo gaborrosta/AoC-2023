@@ -41,7 +41,7 @@ fun main() {
 private fun part1(data: List<List<String>>): Long {
     return data.sumOf { grid ->
         val horizontal = findMirror(grid, shouldFixSmudge = false)
-        val vertical = findMirror(grid.rotate(), shouldFixSmudge = false)
+        val vertical = findMirror(grid.rotateStrings(), shouldFixSmudge = false)
 
         vertical + 100L * horizontal
     }
@@ -52,7 +52,7 @@ private fun part1(data: List<List<String>>): Long {
 private fun part2(data: List<List<String>>): Long {
     return data.sumOf { grid ->
         val horizontal = findMirror(grid, shouldFixSmudge = true)
-        val vertical = findMirror(grid.rotate(), shouldFixSmudge = true)
+        val vertical = findMirror(grid.rotateStrings(), shouldFixSmudge = true)
 
         vertical + 100L * horizontal
     }

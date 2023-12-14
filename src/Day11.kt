@@ -1,6 +1,6 @@
 private fun calculateGalaxiesPositions(data: List<String>, repeat: Int): List<Point> {
     val extraRowsIndices = data.indicesOf { !it.contains("#") }
-    val extraColumnsIndices = data.rotate().indicesOf { !it.contains("#") }
+    val extraColumnsIndices = data.rotateStrings().indicesOf { !it.contains("#") }
 
     val galaxies = arrayListOf<Point>()
     for (y in data.indices) {

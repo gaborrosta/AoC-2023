@@ -128,8 +128,15 @@ fun lcm(input: List<Long>): Long {
  *   Rotates a list of strings, i.e. a matrix of chars stored as strings of
  *   rows.
  */
-fun Collection<String>.rotate(): List<String> {
+fun Collection<String>.rotateStrings(): List<String> {
     return this.flatMap { it.withIndex() }.groupBy({ (i, _) -> i }, { (_, v) -> v }).map { (_, v) -> v.reversed().joinToString("") }
+}
+
+/**
+ *   Rotates a matrix.
+ */
+fun <T> Collection<Collection<T>>.rotate(): List<List<T>> {
+    return this.flatMap { it.withIndex() }.groupBy({ (i, _) -> i }, { (_, v) -> v }).map { (_, v) -> v.reversed() }
 }
 
 
@@ -179,3 +186,33 @@ fun <T> Iterable<T>.groupConsecutiveBy(keepFirstElement: Boolean = true, shouldC
             groups
         }
     }
+
+/**
+ *   Recognises repetition loop in a list and returns the value at the desired
+ *   index.
+ *
+ *   I found this code several years ago, it is not mine.
+ */
+fun recognisePatternInList(history: List<Long>, repetition: Long): Long {
+    val diffHistory = history.zipWithNext().map { (a, b) -> b - a }
+
+    val loopStart = 200
+    val markerLength = 10
+    val marker = diffHistory.subList(loopStart, loopStart + markerLength)
+
+    var loopHeight = -1L
+    var loopLength = -1
+    val heightBeforeLoop = history[loopStart - 1]
+    for (i in loopStart + markerLength..<diffHistory.size) {
+        if (marker == diffHistory.subList(i, i + markerLength)) {
+            loopLength = i - loopStart
+            loopHeight = history[i - 1] - heightBeforeLoop
+            break
+        }
+    }
+
+    val numFullLoops = (repetition - loopStart) / loopLength
+    val offsetIntoLastLoop = ((repetition - loopStart) % loopLength).toInt()
+    val extraHeight = history[loopStart + offsetIntoLastLoop] - heightBeforeLoop
+    return heightBeforeLoop + loopHeight * numFullLoops + extraHeight
+}
