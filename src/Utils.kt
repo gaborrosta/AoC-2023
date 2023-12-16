@@ -14,6 +14,9 @@ fun readFile(day: Int): List<String> = Path("src/Day${day}.txt").readLines()
 data class Point(val x: Int, val y: Int) {
 
     fun inBound(minX: Int, maxX: Int, minY: Int, maxY: Int): Boolean = x in minX..maxX && y in minY..maxY
+    fun inBound(maxX: Int, maxY: Int): Boolean = inBound(0, maxX, 0, maxY)
+
+    operator fun plus(other: Point): Point = Point(x + other.x, y + other.y)
 
     fun manhattan(other: Point): Int = abs(x - other.x) + abs(y - other.y)
 
