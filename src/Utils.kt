@@ -18,6 +18,10 @@ data class Point(val x: Int, val y: Int) {
 
     operator fun plus(other: Point): Point = Point(x + other.x, y + other.y)
 
+    operator fun minus(other: Point): Point = Point(x - other.x, y - other.y)
+
+    operator fun times(amount: Int): Point = Point(x * amount, y * amount)
+
     fun manhattan(other: Point): Int = abs(x - other.x) + abs(y - other.y)
 
     fun neighbors(): List<Point> = NEIGHBORS.map { Point(it.x + this.x, it.y + this.y) }
@@ -27,6 +31,10 @@ data class Point(val x: Int, val y: Int) {
         val NEIGHBORS: List<Point> = (-1..1)
             .flatMap { x -> (-1..1).map { y -> Point(x, y) } }
             .filterNot { it.x == 0 && it.y == 0 }
+
+        val NEIGHBORS_H: List<Point> = listOf(Point(-1, 0), Point(1, 0))
+        val NEIGHBORS_V: List<Point> = listOf(Point(0, -1), Point(0, 1))
+        val NEIGHBORS_HV: List<Point> = NEIGHBORS_H + NEIGHBORS_V
 
     }
 
