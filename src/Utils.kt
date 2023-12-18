@@ -41,6 +41,10 @@ data class Point(val x: Int, val y: Int) {
 }
 
 fun Pair<Int, Int>.toPoint(): Point = Point(this.first, this.second)
+fun Collection<Point>.minX(): Int? = minOfOrNull { it.x }
+fun Collection<Point>.minY(): Int? = minOfOrNull { it.y }
+fun Collection<Point>.maxX(): Int? = maxOfOrNull { it.x }
+fun Collection<Point>.maxY(): Int? = maxOfOrNull { it.y }
 
 
 /**
