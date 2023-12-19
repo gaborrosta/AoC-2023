@@ -231,3 +231,13 @@ fun recognisePatternInList(history: List<Long>, repetition: Long): Long {
     val extraHeight = history[loopStart + offsetIntoLastLoop] - heightBeforeLoop
     return heightBeforeLoop + loopHeight * numFullLoops + extraHeight
 }
+
+
+/**
+ *   Intersection of two IntRanges as IntRange.
+ */
+fun IntRange.intersectAsRange(other: IntRange): IntRange {
+    val start = maxOf(this.first, other.first)
+    val endInclusive = minOf(this.last, other.last)
+    return start..endInclusive
+}
