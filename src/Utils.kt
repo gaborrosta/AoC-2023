@@ -48,6 +48,42 @@ fun Collection<Point>.maxY(): Int? = maxOfOrNull { it.y }
 
 
 /**
+ *   Point in 3D.
+ */
+data class Point3D(val x: Int, val y: Int, val z: Int) {
+
+    fun plus(x: Int, y: Int, z: Int): Point3D = Point3D(this.x + x, this.y + y, this.z + z)
+
+    operator fun plus(other: Point3D): Point3D = Point3D(x + other.x, y + other.y, z + other.z)
+
+    operator fun minus(other: Point3D): Point3D = Point3D(x - other.x, y - other.y, z - other.z)
+
+    operator fun div(length: Int): Point3D = Point3D(x / length, y / length, z / length)
+
+    operator fun times(amount: Int): Point3D = Point3D(x * amount, y * amount, z * amount)
+
+    fun manhattan(other: Point3D): Int = abs(x - other.x) + abs(y - other.y) + abs(z - other.z)
+
+    fun zMinus(amount: Int = 1): Point3D = copy(z = z - amount)
+
+    companion object {
+
+        fun parse(v: String, r: Regex): Point3D = tryParse(v, r) ?: throw IllegalArgumentException("Can't parse $v with regex ${r.pattern}")
+
+        fun tryParse(v: String, r: Regex): Point3D? =
+            r.matchEntire(v)?.groupValues?.drop(1)?.let { (x, y, z) -> Point3D(x.toInt(), y.toInt(), z.toInt()) }
+
+        fun parse(v: String): Point3D = parse(v, DEFAULT_PARSE_REGEX)
+
+        private val DEFAULT_PARSE_REGEX: Regex = "(-?[0-9]+)[,:; ]+(-?[0-9]+)[,:; ]+(-?[0-9]+)".toRegex()
+    }
+}
+
+fun Collection<Point3D>.minZ(): Int? = minOfOrNull { it.z }
+fun Collection<Point3D>.maxZ(): Int? = maxOfOrNull { it.z }
+
+
+/**
  *   Create combination list with repetitions.
  *
  *   I found this code several years ago, it is not mine.
