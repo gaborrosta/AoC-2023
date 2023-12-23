@@ -25,6 +25,7 @@ data class Point(val x: Int, val y: Int) {
     fun manhattan(other: Point): Int = abs(x - other.x) + abs(y - other.y)
 
     fun neighbors(): List<Point> = NEIGHBORS.map { Point(it.x + this.x, it.y + this.y) }
+    fun neighborsHv(): List<Point> = NEIGHBORS_HV.map { Point(it.x + this.x, it.y + this.y) }
 
     companion object {
 
