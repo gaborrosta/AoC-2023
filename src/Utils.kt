@@ -76,7 +76,7 @@ data class Point3D(val x: Int, val y: Int, val z: Int) {
 
         fun parse(v: String): Point3D = parse(v, DEFAULT_PARSE_REGEX)
 
-        private val DEFAULT_PARSE_REGEX: Regex = "(-?[0-9]+)[,:; ]+(-?[0-9]+)[,:; ]+(-?[0-9]+)".toRegex()
+        val DEFAULT_PARSE_REGEX: Regex = "(-?[0-9]+)[,:; ]+(-?[0-9]+)[,:; ]+(-?[0-9]+)".toRegex()
     }
 }
 
